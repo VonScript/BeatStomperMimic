@@ -2,61 +2,56 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D))]
 public class JumpControl : MonoBehaviour
 {
-    [Tooltip("The upwards force by which the player will be pushed.")]
-    public float forceUp = 10f;
+    private float _forceUp = 12f;
 
-    [Tooltip("The downwards force by which the player will drop.")]
-    public float forceDown = -20f;
+    private float _forceDown = -40f;
 
-    [Tooltip("The rotation multiplier, to make turning more accurate.")]
-    public float rotationMultiplier = 5f;
+    private float _rotationMultiplier = 5f;
 
-    [Tooltip("The minimum angle for the square to turn.")]
-    public float minAngle = -90f;
+    private float _minAngle = -90f;
 
-    [Tooltip("The maximum angle for the square to turn.")]
-    public float maxAngle = 45f;
+    private float _maxAngle = 45f;
 
-    [Tooltip("The minimum range for the square's trajectory upwards.")]
-    public float minTrajectory = -10f;
+    private float _minTrajectory = -2.5f;
 
-    [Tooltip("The maximum range for the square's trajectory upwards.")]
-    public float maxTrajectory = 10f;
+    private float _maxTrajectory = 2.5f;
 
-    [Tooltip("The duration of the pause before the square drops.")]
-    public float pause = 0.05f;
+    private float _pause = 0.25f;
 
-    //I decided to name the square with a face Cubie
-    private Rigidbody2D _cubie;
+    private Rigidbody2D _klay;
 
-    //Flag for jump and land button
-    private GameManager _gm;
-
-    //Flag for first jump of the level, and after power up
     private bool _first = true;
 
     private Vector2 _velocity;
 
-    private void Awake()
+    public bool jump = false;
+
+    GameManager _gm;
+
+    PlatformManager _pm;
+
+    void Awake()
     {
-        _cubie = GetComponent<Rigidbody2D>();
-        _velocity = _cubie.velocity;
+        _gm = FindObjectOfType<GameManager>();
+        _pm = FindObjectOfType<PlatformManager>();
+        _klay = GetComponent<Rigidbody2D>();
+        _velocity = _klay.velocity;
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        float angle = Mathf.Clamp(_cubie.velocity.y * rotationMultiplier, minAngle, maxAngle);
-        _cubie.MoveRotation(angle);
+        float angle = Mathf.Clamp(_klay.velocity.y * _rotationMultiplier, _minAngle, _maxAngle);
+        _klay.MoveRotation(angle);
     }
 
-    private void onCollisionEnter2D(Collider2D collider){
-        _gm.jumpState = false;
+    void onTriggerEnter2D(Collider2D collider){
+
+        Debug.Log("collided with " + collider.name);
     }
 
-    private void Update()
+    void Update()
     {
         if (Input.GetButtonDown("Jump"))
         {
@@ -64,8 +59,7 @@ public class JumpControl : MonoBehaviour
         }
     }
 
-    // Causes the player to "jump".
-    private void Jump(){   
+    void Jump(){   
         float x_axis;
 
         //The first jump is always straight up, including after a power trip
@@ -73,35 +67,38 @@ public class JumpControl : MonoBehaviour
             x_axis = 0f;
             _first = false;
         }else{ 
-            x_axis = Random.Range(minTrajectory, maxTrajectory);
+            x_axis = Random.Range(_minTrajectory, _maxTrajectory);
         }
 
-        if(!_gm.jumpState){
-            _velocity.y = forceUp;
+        if(!jump){
+            _velocity.y = _forceUp;
             _velocity.x = x_axis;
 
-            _cubie.velocity = _velocity;
-
-            _gm.jumpState = true;
+            _klay.velocity = _velocity;
+            jump = true;
         }else{
-            StartCoroutine(DropTheBeat());
+            //StartCoroutine(DropTheBeat());
 
-            _velocity.y = forceDown;
+            _velocity.y = _forceDown;
             _velocity.x = 0f;
 
-            _cubie.velocity = _velocity;
-            _gm.jumpState = false;
+            _klay.velocity = _velocity;
+            jump = false;
         }
     }
 
-    //Slight pause in the air before Cubie slams down
-    private IEnumerator DropTheBeat(){
-            _cubie.simulated = false;
-            yield return new WaitForSeconds(pause);
-            _cubie.simulated = true;
+    //Slight pause in the air before Klay slams down
+    IEnumerator DropTheBeat(){
+        _klay.simulated = false;
+        yield return new WaitForSeconds(_pause);
+        _klay.simulated = true;
     }
 
-    private void PowerTrip(){
+    void PowerTrip(){
+        _first = true;
+    }
 
+    void OnBecameInvisible(){
+        _gm.StopGame();
     }
 }

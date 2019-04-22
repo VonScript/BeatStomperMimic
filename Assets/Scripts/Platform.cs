@@ -1,42 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class Platform : MonoBehaviour
 {
-    //Reference for the platform
-    private Rigidbody2D _platform;
+    public GameObject landTrigger = null;
 
-    //Boolean whether the rigidbody's physics have been turned on or off for Cubie to pass through
-    private bool _seethrough;
+    private Collider2D _land = null;
 
-    public void Awake(){
-        _platform = GetComponent<Rigidbody2D>();
-        _platform.simulated = true;
-        _seethrough = true;
+    private ScoreManager _sm;
+
+    int _score = 0;
+
+    void Awake(){
+        _land = landTrigger.GetComponent<Collider2D>();
+        _sm = FindObjectOfType<ScoreManager>();
     }
 
-    private void OnBecameInvisible()
-    {
+    void OnTriggerEnter2D(Collider2D klay){
+        if(_land.IsTouching(klay)){
+            int num;
+            int.TryParse(this.name, out num);
+            if(num >  _score){
+                _score = num;
+                _sm.SetScore(num);
+            }
+        }
+    }
+
+    void OnBecameInvisible(){
         Destroy(gameObject);
-    }
-
-    private void Update()
-    {
-        if (Input.GetButtonDown("Jump"))
-        {
-            Incoming();
-        }
-    }
-
-    private void Incoming(){
-        if(_seethrough == true){
-            _platform.simulated = false;
-            _seethrough = false;
-        }else{
-            _platform.simulated = true;
-            _seethrough = true;
-        }
     }
 }

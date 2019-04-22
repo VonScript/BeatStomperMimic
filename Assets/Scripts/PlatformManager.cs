@@ -4,47 +4,75 @@ using UnityEngine;
 
 public class PlatformManager : MonoBehaviour
 {
-    public Platform platformPrefab;
+    public GameObject platformPrefab = null;
 
-    private float _min;
+    public GameObject klay = null;
 
-    private float _max;
+    private JumpControl _jc;
 
-    private Trigger _trigger;
+    private GameManager _gm;
 
-    private void Awake(){
-        _min = CameraBounds.bottomLeft.x;
-        _max = CameraBounds.topRight.x;
+    Rigidbody2D _objRB = null;
+
+    int _platformNum = 0;
+
+    float yAxis = 0.9f;
+
+    void Awake(){
+        _gm = FindObjectOfType<GameManager>();
+        _jc = klay.GetComponent<JumpControl>();
     }
 
+    void Update(){
+        if(Input.GetButtonDown("Jump")){
+            if(_gm.state == GameState.GameScreen){
+                    if(!_jc.jump){
+                        _objRB.simulated = false;
+                    }else{
+                        _objRB.simulated = true;
+                    }
+            }else if(_gm.state == GameState.TitleScreen){
+                _gm.StartGame();
+                FirstPlatform();
+                SpawnPlatform();
 
-    public void StartGame()
-    {
-        Vector3 pos = transform.position;
-        pos.y = -3.78f;
-        Instantiate<Platform>(platformPrefab, pos, Quaternion.identity);
-
-        OneHop();
-    }
-
-    private void Update(){
-        //if platform has changed
-        OneHop();
-    }
-
-    private void OneHop()
-    {
-        while (GameManager.state == GameState.Game)
-        {
-            while(!_trigger.oops){
-
-                Vector3 pos = transform.position;
-
-                pos.y = 1.264f;
-                pos.x = Random.Range(_min, _max);
-
-                Instantiate<Platform>(platformPrefab, pos, Quaternion.identity);
+                //Realigning Klay
+                Vector3 pos = klay.transform.position;
+                pos.x = 0;
+                pos.y = -3;
+                pos.z = 0;
+                klay.transform.position = pos;
             }
         }
+    }
+
+    void FirstPlatform(){
+        Vector2 pos = transform.position;
+        pos.y = -4f;
+
+        GameObject obj = Instantiate(platformPrefab, pos, Quaternion.identity);
+        obj.name = _platformNum.ToString();
+
+        _objRB = obj.GetComponent<Rigidbody2D>();
+        _platformNum++;
+    }
+
+    public void SpawnPlatform(){
+        Vector2 pos = transform.position;
+        pos.y = yAxis;
+        yAxis += 4.75f;
+
+        GameObject obj = Instantiate(platformPrefab, pos, Quaternion.identity);
+        obj.name = _platformNum.ToString();
+
+        _objRB = obj.GetComponent<Rigidbody2D>();
+        _platformNum++;
+    }
+
+    public void Clear(){
+        GameObject[] platforms = GameObject.FindGameObjectsWithTag("Platform");
+        foreach (GameObject p in platforms) Destroy(p); 
+        _platformNum = 0;
+        yAxis = 0.9f;
     }
 }

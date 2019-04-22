@@ -1,53 +1,59 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
-public enum GameState
-{
-    TitleScreen, Game
+public enum GameState{
+    TitleScreen,
+    GameScreen
 }
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager current { get; private set; }
+    public static GameManager main { get; private set; }
 
-    public static GameState state { get; private set; } = GameState.TitleScreen;
+    public GameState state = GameState.TitleScreen;
 
-    public bool jumpState = false;
+    public int level;
 
-    public bool activePlatformState = false;
+    private GameObject _titleScreen = null;
 
-    public bool aiborneState = false;
+    private GameObject _gameScreen = null;
 
-    private TextMeshProUGUI _finalScoreText;
+    private ArtifactSpawn _artifact;
 
-    private ScoreManager _scoreManager;
+    private PlatformManager _platform;
 
+    private ScoreManager _score;
 
-    private void Awake(){
-        if (current == null){
-            current = this;
-            DontDestroyOnLoad(gameObject);
-        }else{
-            DestroyImmediate(gameObject);
-        }
+    private CameraControl _camera;
 
-        _scoreManager = GetComponent<ScoreManager>();
+    void Awake(){
+        _artifact = FindObjectOfType<ArtifactSpawn>();
+        _platform = FindObjectOfType<PlatformManager>();
+        _score = FindObjectOfType<ScoreManager>();
+        _camera = FindObjectOfType<CameraControl>();
+
+        _titleScreen = GameObject.Find("TitleScreen");
+        _gameScreen = GameObject.Find("GameScreen");
+
+        _gameScreen.SetActive(false);
+        _score.HighScore();
     }
 
     public void StartGame(){
-        state = GameState.Game;
-
-        FindObjectOfType<PlatformManager>().StartGame();
-
-        GameObject.Find("GetReady").SetActive(false);
+        state = GameState.GameScreen;
+        _score.ClearScore();
+        _titleScreen.SetActive(false);
+        _gameScreen.SetActive(true);
+        _artifact.SpawnArtifact();
     }
 
     public void StopGame(){
+        _platform.Clear();
+        _camera.Reset();
         state = GameState.TitleScreen;
-        
-        _finalScoreText.SetText(string.Format("{0}"), _scoreManager.score);
+        _gameScreen.SetActive(false);
+        _titleScreen.SetActive(true);
+        _score.HighScore();
     }
-
 }
