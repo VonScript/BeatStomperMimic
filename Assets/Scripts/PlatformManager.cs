@@ -6,7 +6,11 @@ public class PlatformManager : MonoBehaviour
 {
     public GameObject platformPrefab = null;
 
-    public GameObject klay = null;
+    public GameObject klayPrefab = null;
+
+    //public GameObject powerCubePrefab = null;
+
+    private GameObject _klay;
 
     private JumpControl _jc;
 
@@ -20,7 +24,6 @@ public class PlatformManager : MonoBehaviour
 
     void Awake(){
         _gm = FindObjectOfType<GameManager>();
-        _jc = klay.GetComponent<JumpControl>();
     }
 
     void Update(){
@@ -35,13 +38,7 @@ public class PlatformManager : MonoBehaviour
                 _gm.StartGame();
                 FirstPlatform();
                 SpawnPlatform();
-
-                //Realigning Klay
-                Vector3 pos = klay.transform.position;
-                pos.x = 0;
-                pos.y = -3;
-                pos.z = 0;
-                klay.transform.position = pos;
+                LastFirstborn();
             }
         }
     }
@@ -57,6 +54,14 @@ public class PlatformManager : MonoBehaviour
         _platformNum++;
     }
 
+    void LastFirstborn(){
+        Vector2 pos = transform.position;
+        pos.y = -3f;
+
+        _klay = Instantiate(klayPrefab, pos, Quaternion.identity);
+        _jc = _klay.GetComponent<JumpControl>();
+    }
+
     public void SpawnPlatform(){
         Vector2 pos = transform.position;
         pos.y = yAxis;
@@ -64,6 +69,13 @@ public class PlatformManager : MonoBehaviour
 
         GameObject obj = Instantiate(platformPrefab, pos, Quaternion.identity);
         obj.name = _platformNum.ToString();
+
+        if((_platformNum % 10) == 0){
+            Vector2 pos = transform.position;
+            pos.x = Random.Range(-1.2f, 1.2f);
+            //Instantiate(powerCubePrefab, pos, Quaternion.identity);
+
+        }
 
         _objRB = obj.GetComponent<Rigidbody2D>();
         _platformNum++;
@@ -74,5 +86,12 @@ public class PlatformManager : MonoBehaviour
         foreach (GameObject p in platforms) Destroy(p); 
         _platformNum = 0;
         yAxis = 0.9f;
+
+        Destroy(_klay);
+    }
+
+    public void Breakout(){
+        Debug.Log("This is my birthright!");
+        _jc.PowerTrip();
     }
 }

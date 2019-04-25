@@ -46,11 +46,6 @@ public class JumpControl : MonoBehaviour
         _klay.MoveRotation(angle);
     }
 
-    void onTriggerEnter2D(Collider2D collider){
-
-        Debug.Log("collided with " + collider.name);
-    }
-
     void Update()
     {
         if (Input.GetButtonDown("Jump"))
@@ -94,7 +89,7 @@ public class JumpControl : MonoBehaviour
         _klay.simulated = true;
     }
 
-    void PowerTrip(){
+    public void PowerTrip(){
         _first = true;
     }
 

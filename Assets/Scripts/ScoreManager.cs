@@ -26,11 +26,11 @@ public class ScoreManager : MonoBehaviour
 
     public void SetScore(int newscore){
         if(newscore > playerScore){
+            if((newscore % 5) == 0) _pm.Breakout();
             playerScore = newscore;
             score.SetText(newscore.ToString());
             _cc.MoveUp();
             _pm.SpawnPlatform();
-            Debug.Log(newscore + " - " + playerScore);
         }
     }
 

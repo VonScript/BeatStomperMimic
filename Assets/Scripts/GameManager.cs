@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
         _titleScreen.SetActive(false);
         _gameScreen.SetActive(true);
         _artifact.SpawnArtifact();
+
+        if(_camera == null) Debug.Log("Start game - Camera destroyed");
     }
 
     public void StopGame(){
@@ -55,5 +57,7 @@ public class GameManager : MonoBehaviour
         _gameScreen.SetActive(false);
         _titleScreen.SetActive(true);
         _score.HighScore();
+
+        if(_camera == null) Debug.Log("Stop game - Camera destroyed");
     }
 }

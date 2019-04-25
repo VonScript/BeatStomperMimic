@@ -49,8 +49,8 @@ public class ArtifactSpawn : MonoBehaviour
             pos.x = Random.Range(-_bounds.extents.x, _bounds.extents.x);
             pos.z = 10f;
 
-            Instantiate(textPrefab, pos, Quaternion.Euler(0, 0, 90));
-            yield return new WaitForSeconds(2f);
+            Instantiate(textPrefab, pos, Quaternion.Euler(0, 0, 0));
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -76,7 +76,7 @@ public class ArtifactSpawn : MonoBehaviour
             pos.z = 10f;
 
             Instantiate(oblongPrefab, pos, Quaternion.identity); 
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1f);
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 {
-    private Vector2 pos;
+    private Vector3 pos;
 
     void Awake(){
         pos = transform.position;
@@ -16,6 +16,7 @@ public class CameraControl : MonoBehaviour
 
     public void Reset(){
         pos.y = 0;
+        pos.z = -10f;
         transform.position = pos;
     }
 }
