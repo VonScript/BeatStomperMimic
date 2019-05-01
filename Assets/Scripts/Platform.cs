@@ -5,55 +5,62 @@ using TMPro;
 
 public class Platform : MonoBehaviour
 {
-    public GameObject landTrigger = null;
-
     private Collider2D _land = null;
+
+    private Rigidbody2D _rb;
 
     private ScoreManager _sm;
 
-    int _score = 0;
 
-    float delta;
-    float speed = 2.0f; 
-    Vector3 startPos;
+    private float _delta;
+
+    private int _score = 0;
+
+    private Vector3 _startPos;
+
+
+    public GameObject scoreTrigger = null;
+
 
     void Awake(){
-        _land = landTrigger.GetComponent<Collider2D>();
+        _land = scoreTrigger.GetComponent<Collider2D>();
+        
         _sm = FindObjectOfType<ScoreManager>();
-        startPos = transform.position;
-        startPos.x += 0.18f;
+        _rb = GetComponent<Rigidbody2D>();
+
+        _startPos = transform.position;
     }
 
-    void OnTriggerEnter2D(Collider2D klay){
+    private void OnBecameInvisible(){
+        Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D klay){
         if(_land.IsTouching(klay)){
             klay.transform.SetParent(this.transform);
             int num;
             int.TryParse(this.name, out num);
-            if(num >  _score){
+            if(num > _score){
                 _score = num;
                 _sm.SetScore(num);
             }
         }
     }
 
-    public void Update(){
+    private void Update(){
         if(this.name != "0"){
             int num;
             int.TryParse(this.name, out num);
 
             if((num % 2) == 0){
-                delta = 1.2f;
+                _delta = 1.2f;
             }else{
-                delta = -1.2f;
+                _delta = -1.2f;
             }
 
-            Vector3 v = startPos;
-            v.x += delta * Mathf.Sin (Time.time * speed);
+            Vector3 v = _startPos;
+            v.x += _delta * Mathf.Sin(Time.time * 2f);
             transform.position = v;
         }
-    }
-
-    void OnBecameInvisible(){
-        Destroy(gameObject);
     }
 }

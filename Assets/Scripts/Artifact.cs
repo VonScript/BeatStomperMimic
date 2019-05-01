@@ -5,17 +5,16 @@ using UnityEngine;
 public class Artifact : MonoBehaviour
 {
     private Rigidbody _rb;
-    void Awake()
-    {
+
+    private void Awake(){
         _rb = GetComponent<Rigidbody>();
     }
 
-    void Start(){
-        _rb.velocity = transform.TransformDirection(Vector2.up) * 2.5f;
-        //_rb.AddForce(transform.forward * Time.deltaTime);
+    private void OnBecameInvisible(){
+        Destroy(gameObject);
     }
 
-    void OnBecameInvisible(){
-        Destroy(gameObject);
+    private void Start(){
+        _rb.velocity = transform.TransformDirection(Vector2.up) * 2.5f;
     }
 }

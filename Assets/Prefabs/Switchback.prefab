@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 6497136939436860377}
   - component: {fileID: 7333985960905467317}
   - component: {fileID: 6550457941543222116}
-  - component: {fileID: 9037470666507235826}
   - component: {fileID: 8020235430459993855}
+  - component: {fileID: 5332122700187857190}
   m_Layer: 0
   m_Name: Switchback
-  m_TagString: Untagged
+  m_TagString: Artifact
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,7 +51,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 997a43b767814dd0a7642ec9b78cba41, type: 3}
+  - {fileID: 2100000, guid: 4b4bcdc70e7d2924eada810280107b0e, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,13 +87,25 @@ TextMesh:
   m_Alignment: 0
   m_TabSize: 4
   m_FontSize: 0
-  m_FontStyle: 2
+  m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 997a43b767814dd0a7642ec9b78cba41, type: 3}
+  m_Font: {fileID: 12800000, guid: 4b4bcdc70e7d2924eada810280107b0e, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
---- !u!54 &9037470666507235826
+--- !u!114 &8020235430459993855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3750007461950817711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505882a8fec58464cbee7553fb3ad12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &5332122700187857190
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,15 +121,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8020235430459993855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3750007461950817711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 505882a8fec58464cbee7553fb3ad12d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -10,73 +10,60 @@ public class ArtifactSpawn : MonoBehaviour
 
     public GameObject textPrefab;
 
-    private OverlayColours _oc;
+
+    private Bounds _bounds;
 
     private GameManager _gm;
 
     private BoxCollider2D _spawner;
 
-    private Bounds _bounds;
-
-    void Awake(){
+    
+    private void Awake(){
         _gm = FindObjectOfType<GameManager>();
-        _oc = FindObjectOfType<OverlayColours>();
+
         _spawner = GetComponent<BoxCollider2D>();
         _bounds = _spawner.bounds;
     }
 
+    private IEnumerator ArtifactSelect(GameObject prefab, int level){
+        while(_gm.state == GameState.GameScreen && _gm.level == level){
+            Vector3 pos = transform.position;
+            pos.x = Random.Range(-_bounds.extents.x, _bounds.extents.x);
+            pos.z = 10f;
+
+            if(level == 2){
+                int x = Random.Range(-45, 45);
+                int y = Random.Range(-45, 45);
+                int z = Random.Range(-45, 45);
+
+                Instantiate(prefab, pos, Quaternion.Euler(x, y, z));        
+            }else{
+                Instantiate(prefab, pos, Quaternion.identity);
+            }
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    public void Clear(){
+        GameObject[] artifact = GameObject.FindGameObjectsWithTag("Artifact");
+        foreach (GameObject a in artifact) Destroy(a); 
+    }
+
     public void SpawnArtifact(){
         if(_gm.state == GameState.GameScreen){
-            switch(_oc.level){
-                case 1: StartCoroutine(Switchback());
+            switch(_gm.level){
+                case 1: StartCoroutine(ArtifactSelect(textPrefab, 1));
                 break;
 
-                case 2: StartCoroutine(Cube());
+                case 2: StartCoroutine(ArtifactSelect(cubePrefab, 2));
                 break;
 
-                case 3: StartCoroutine(Lines());
+                case 3: StartCoroutine(ArtifactSelect(oblongPrefab, 3));
                 break;
 
                 default:
                 break;
             }
-        }
-    }
-
-    IEnumerator Switchback(){
-        while(_gm.state == GameState.GameScreen && _oc.level == 1){
-            Vector3 pos = transform.position;
-            pos.x = Random.Range(-_bounds.extents.x, _bounds.extents.x);
-            pos.z = 10f;
-
-            Instantiate(textPrefab, pos, Quaternion.Euler(0, 0, 0));
-            yield return new WaitForSeconds(1f);
-        }
-    }
-
-    IEnumerator Cube(){
-        while(_gm.state == GameState.GameScreen && _oc.level == 2){
-            Vector3 pos = transform.position;
-            pos.x = Random.Range(-_bounds.extents.x, _bounds.extents.x);
-            pos.z = 10f;
-
-            int x = Random.Range(-45, 45);
-            int y = Random.Range(-45, 45);
-            int z = Random.Range(-45, 45);
-
-            Instantiate(cubePrefab, pos, Quaternion.Euler(x, y, z));
-            yield return new WaitForSeconds(1f);
-        }
-    }
-
-    IEnumerator Lines(){
-        while(_gm.state == GameState.GameScreen && _oc.level == 3){
-            Vector3 pos = transform.position;
-            pos.x = Random.Range(-_bounds.extents.x, _bounds.extents.x);
-            pos.z = 10f;
-
-            Instantiate(oblongPrefab, pos, Quaternion.identity); 
-            yield return new WaitForSeconds(1f);
         }
     }
 }

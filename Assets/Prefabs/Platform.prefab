@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4324113251342468842}
   - component: {fileID: 7155277032034543151}
   m_Layer: 0
-  m_Name: LandingTrigger
+  m_Name: ScoringTrigger
   m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f961e82bca5c541448d24bae06dfb9da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  landTrigger: {fileID: 3678138780332957428}
+  scoreTrigger: {fileID: 3678138780332957428}
 --- !u!50 &7270235687683104266
 Rigidbody2D:
   serializedVersion: 4

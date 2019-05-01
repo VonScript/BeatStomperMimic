@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 4616410876245615402}
   - component: {fileID: 592082383934459095}
   - component: {fileID: 5382177003840235767}
-  - component: {fileID: 7272596411992466044}
   - component: {fileID: 1927844460701909023}
+  - component: {fileID: 2657080786740497938}
   m_Layer: 0
   m_Name: Oblong
-  m_TagString: Untagged
+  m_TagString: Artifact
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,7 +79,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!54 &7272596411992466044
+--- !u!114 &1927844460701909023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3779196959561240564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505882a8fec58464cbee7553fb3ad12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &2657080786740497938
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,15 +107,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1927844460701909023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3779196959561240564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 505882a8fec58464cbee7553fb3ad12d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

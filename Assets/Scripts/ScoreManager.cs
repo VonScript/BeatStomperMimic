@@ -7,41 +7,60 @@ public class ScoreManager : MonoBehaviour
 {
     public TextMeshProUGUI score;
 
+    public TextMeshProUGUI currentScore;
+
     public TextMeshProUGUI highScore;
 
-    private int playerScore;
 
-    private int playerHighScore = 0;
+    public bool boost;
+
 
     private CameraControl _cc;
 
     private PlatformManager _pm;
 
-    void Awake()
+
+    private int playerScore;
+
+    private int playerHighScore = 0;
+
+    private int boostScore = 20;
+
+
+    private void Awake()
     {
         _cc = FindObjectOfType<CameraControl>();
         _pm = FindObjectOfType<PlatformManager>();
-        score.SetText("0");
-    }
-
-    public void SetScore(int newscore){
-        if(newscore > playerScore){
-            if((newscore % 5) == 0) _pm.Breakout();
-            playerScore = newscore;
-            score.SetText(newscore.ToString());
-            _cc.MoveUp();
-            _pm.SpawnPlatform();
-        }
-    }
-
-    public void HighScore(){
-        if(playerScore > playerHighScore) playerHighScore = playerScore;
-
-        highScore.SetText(playerHighScore.ToString());
     }
 
     public void ClearScore(){
         playerScore = 0;
         score.SetText("0");
+    }
+
+    public void SetHighScore(){
+        int hs = PlayerPrefs.GetInt("Highscore");
+        playerHighScore = hs;
+
+        if(playerScore > playerHighScore) playerHighScore = playerScore;
+
+        currentScore.SetText(playerScore.ToString());
+        highScore.SetText(playerHighScore.ToString());
+        PlayerPrefs.SetInt("Highscore", playerHighScore);
+    }
+
+    public void SetScore(int newscore){
+        if(newscore > playerScore){
+            if(boost){
+                newscore += boostScore;
+                _pm.platformNum += boostScore;
+                boost = false;
+            }
+
+            playerScore = newscore;
+            score.SetText(newscore.ToString());
+            _cc.MoveUp(); 
+            _pm.SpawnPlatform();
+        }
     }
 }
